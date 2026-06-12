@@ -1,61 +1,66 @@
 # Taskly — Todo Application
 
-A full-stack Todo application built with **React** (multi-page frontend) and **Node.js + Express** (REST API backend), with JSON file-based persistence.
+A full-stack Todo application built with **React** (multi-page frontend) and **Node.js + Express** (REST API backend), featuring JSON file-based persistence for lightweight data storage.
 
 ---
 
 ## Features
 
 ### Todo List Page (`/`)
-- **Create tasks** — title, description, priority (low/medium/high), due date, tags
-- **Complete/uncomplete** tasks with a single click
-- **Delete** tasks (with confirmation)
-- **Filter** by All / Active / Completed
-- **Search** by title, description, or tag
-- **Sort** by newest, oldest, priority, or due date
-- Live stats bar showing active/done/total counts
+
+* Create tasks with title, description, priority, due date, and tags
+* Mark tasks as complete/incomplete with a single click
+* Delete tasks with confirmation
+* Filter tasks by All, Active, or Completed
+* Search tasks by title, description, or tags
+* Sort tasks by newest, oldest, priority, or due date
+* Real-time statistics showing total, active, and completed tasks
 
 ### Todo Detail Page (`/todo?id=<id>`)
-- Full task details: title, description, priority, due date, tags, created & updated timestamps, unique task ID
-- **Inline editing** — edit any field in-place and save
-- **Toggle complete** directly on the detail page
-- **Delete** from detail view
-- Overdue date highlighting
+
+* View complete task information
+* Inline editing for all task fields
+* Toggle completion status
+* Delete task directly from detail page
+* View created and updated timestamps
+* Overdue task highlighting
+* Unique task ID display
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18, React Router v6 |
-| Backend | Node.js, Express 4 |
-| Storage | JSON file (`todos.json`) |
-| Styling | Pure CSS with CSS variables |
-| IDs | UUID v4 |
+| Layer    | Technology               |
+| -------- | ------------------------ |
+| Frontend | React 18                 |
+| Routing  | React Router v6          |
+| Backend  | Node.js, Express 4       |
+| Storage  | JSON File (`todos.json`) |
+| Styling  | Pure CSS                 |
+| IDs      | UUID v4                  |
 
 ---
 
 ## Project Structure
 
-```
+```text
 todo-app/
 ├── backend/
-│   ├── server.js        # Express server + CRUD routes
-│   ├── todos.json       # Data file (auto-created)
+│   ├── server.js
+│   ├── todos.json
 │   └── package.json
 ├── frontend/
 │   ├── public/
 │   │   └── index.html
 │   ├── src/
-│   │   ├── App.js              # Router setup
-│   │   ├── api.js              # API helper functions
+│   │   ├── App.js
+│   │   ├── api.js
 │   │   ├── index.js
-│   │   ├── index.css           # Global styles / design tokens
+│   │   ├── index.css
 │   │   └── pages/
-│   │       ├── TodosPage.js        # Page 1: list view
+│   │       ├── TodosPage.js
 │   │       ├── TodosPage.css
-│   │       ├── TodoDetailPage.js   # Page 2: single todo
+│   │       ├── TodoDetailPage.js
 │   │       └── TodoDetailPage.css
 │   └── package.json
 └── README.md
@@ -65,33 +70,38 @@ todo-app/
 
 ## API Reference
 
-Base URL: `http://localhost:5000/api`
+**Base URL**
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/todos` | Get all todos |
-| `GET` | `/todos/:id` | Get single todo by ID |
-| `POST` | `/todos` | Create a new todo |
-| `PUT` | `/todos/:id` | Update a todo |
-| `DELETE` | `/todos/:id` | Delete a todo |
+```text
+http://localhost:5001/api
+```
 
-### Todo Object Schema
+| Method | Endpoint     | Description       |
+| ------ | ------------ | ----------------- |
+| GET    | `/todos`     | Get all todos     |
+| GET    | `/todos/:id` | Get a single todo |
+| POST   | `/todos`     | Create a todo     |
+| PUT    | `/todos/:id` | Update a todo     |
+| DELETE | `/todos/:id` | Delete a todo     |
+
+### Todo Schema
 
 ```json
 {
   "id": "uuid-v4",
-  "title": "string (required)",
+  "title": "string",
   "description": "string",
   "priority": "low | medium | high",
   "dueDate": "YYYY-MM-DD | null",
   "tags": ["string"],
   "completed": false,
-  "createdAt": "ISO date string",
-  "updatedAt": "ISO date string"
+  "createdAt": "ISO Date",
+  "updatedAt": "ISO Date"
 }
 ```
 
-### POST /api/todos — Request body
+### Example Create Request
+
 ```json
 {
   "title": "Buy groceries",
@@ -104,50 +114,78 @@ Base URL: `http://localhost:5000/api`
 
 ---
 
-## Getting Started
+## Installation & Setup
 
 ### Prerequisites
-- Node.js v16+
-- npm
 
-### 1. Start the backend
+* Node.js v16 or higher
+* npm
+
+### Backend Setup
 
 ```bash
 cd backend
 npm install
 npm start
-# Server runs on http://localhost:5001
 ```
 
-### 2. Start the frontend
+Backend runs at:
+
+```text
+http://localhost:5001
+```
+
+### Frontend Setup
 
 ```bash
 cd frontend
 npm install
 npm start
-# App opens at http://localhost:3000
 ```
 
-### Environment Variables (optional)
+Frontend runs at:
 
-In `frontend/.env`:
-```
-REACT_APP_API_URL=http://localhost:5000/api
+```text
+http://localhost:3000
 ```
 
 ---
 
-## Multi-Page Architecture
+## Environment Variables (Optional)
 
-The app uses **React Router v6** with two distinct pages:
+Create a `.env` file inside the frontend directory:
 
-- **`/`** — `TodosPage` — Shows the full list with filtering, search, and creation
-- **`/todo?id=<uuid>`** — `TodoDetailPage` — Shows a single todo, receives the todo ID as a query parameter (`?id=...`), and displays all associated information with edit capability
+```env
+REACT_APP_API_URL=http://localhost:5001/api
+```
 
-This satisfies the requirement of multiple pages instead of a SPA with a single route.
+---
+
+## Application Routes
+
+| Route             | Description      |
+| ----------------- | ---------------- |
+| `/`               | Todo List Page   |
+| `/todo?id=<uuid>` | Todo Detail Page |
+
+The application uses React Router v6 to provide a multi-page experience with dedicated routes for task listing and task details.
 
 ---
 
 ## Data Persistence
 
-Todos are saved in `backend/todos.json`. The file is created automatically on first run. No database setup is required.
+All todos are stored in:
+
+```text
+backend/todos.json
+```
+
+The file is automatically created when the application starts for the first time. No external database setup is required.
+
+---
+
+## Author
+
+**Saiswasthik D Shetty**
+
+Built as part of a Full-Stack Developer Assignment using React, Node.js, and Express.
